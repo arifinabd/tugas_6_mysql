@@ -1,0 +1,193 @@
+1. =========================================================================================================================
+Arifin@DESKTOP-P49T6P4 c:\xampp
+# mysql\bin\mysql -u root
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 9
+Server version: 10.4.22-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database if not exists tugas;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> use tugas;
+Database changed
+MariaDB [tugas]>
+MariaDB [tugas]> create table if not exists latihan_1
+    -> (a int unsigned primary key auto_increment,
+    -> b varchar(10) default 'merdeka' not null)
+    -> engine = myISAM charset = ascii auto_increment = 100;
+Query OK, 0 rows affected (0.010 sec)
+
+MariaDB [tugas]> desc latihan_1;
++-------+------------------+------+-----+---------+----------------+
+| Field | Type             | Null | Key | Default | Extra          |
++-------+------------------+------+-----+---------+----------------+
+| a     | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| b     | varchar(10)      | NO   |     | merdeka |                |
++-------+------------------+------+-----+---------+----------------+
+2 rows in set (0.017 sec)
+
+MariaDB [tugas]> show create table latihan_1;
++-----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table     | Create Table                                                                                                                                                                                          |
++-----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| latihan_1 | CREATE TABLE `latihan_1` (
+  `a` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `b` varchar(10) NOT NULL DEFAULT 'merdeka',
+  PRIMARY KEY (`a`)
+) ENGINE=MyISAM AUTO_INCREMENT=100 DEFAULT CHARSET=ascii |
++-----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.000 sec)
+
+2. =========================================================================================================================
+
+MariaDB [tugas]> alter table latihan_1 engine = InnoDB;
+Query OK, 0 rows affected (0.048 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [tugas]> show create table latihan_1;
++-----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table     | Create Table                                                                                                                                                                                          |
++-----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| latihan_1 | CREATE TABLE `latihan_1` (
+  `a` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `b` varchar(10) NOT NULL DEFAULT 'merdeka',
+  PRIMARY KEY (`a`)
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=ascii |
++-----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.002 sec)
+
+3. =========================================================================================================================
+
+MariaDB [tugas]> alter table latihan_1
+    -> change b c varchar(10) not null default "merdeka";
+Query OK, 0 rows affected (0.015 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [tugas]> desc latihan_1;
++-------+------------------+------+-----+---------+----------------+
+| Field | Type             | Null | Key | Default | Extra          |
++-------+------------------+------+-----+---------+----------------+
+| a     | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| c     | varchar(10)      | NO   |     | merdeka |                |
++-------+------------------+------+-----+---------+----------------+
+2 rows in set (0.015 sec)
+
+4. ========================================================================================================================
+
+MariaDB [tugas]> alter table latihan_1 add b date default '2018-01-01' after a;
+Query OK, 0 rows affected (0.015 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [tugas]> desc latihan_1;
++-------+------------------+------+-----+------------+----------------+
+| Field | Type             | Null | Key | Default    | Extra          |
++-------+------------------+------+-----+------------+----------------+
+| a     | int(10) unsigned | NO   | PRI | NULL       | auto_increment |
+| b     | date             | YES  |     | 2018-01-01 |                |
+| c     | varchar(10)      | NO   |     | merdeka    |                |
++-------+------------------+------+-----+------------+----------------+
+3 rows in set (0.018 sec)
+
+5. ========================================================================================================================
+
+MariaDB [tugas]> create table latihan_2 like latihan_1;
+Query OK, 0 rows affected (0.026 sec)
+
+MariaDB [tugas]> insert into latihan_2 select * from latihan_1;
+Query OK, 0 rows affected (0.002 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [tugas]> desc latihan_2;
++-------+------------------+------+-----+------------+----------------+
+| Field | Type             | Null | Key | Default    | Extra          |
++-------+------------------+------+-----+------------+----------------+
+| a     | int(10) unsigned | NO   | PRI | NULL       | auto_increment |
+| b     | date             | YES  |     | 2018-01-01 |                |
+| c     | varchar(10)      | NO   |     | merdeka    |                |
++-------+------------------+------+-----+------------+----------------+
+3 rows in set (0.016 sec)
+
+6. ========================================================================================================================
+
+MariaDB [tugas]> alter table latihan_2 engine = MEMORY;
+Query OK, 0 rows affected (0.021 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [tugas]> show create table latihan_2;
++-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table     | Create Table                                                                                                                                                                                                        |
++-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| latihan_2 | CREATE TABLE `latihan_2` (
+  `a` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `b` date DEFAULT '2018-01-01',
+  `c` varchar(10) NOT NULL DEFAULT 'merdeka',
+  PRIMARY KEY (`a`)
+) ENGINE=MEMORY DEFAULT CHARSET=ascii |
++-----------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.001 sec)
+
+7. ========================================================================================================================
+
+MariaDB [tugas]> alter table latihan_2 rename latihan_3;
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [tugas]> desc latihan_2;
+ERROR 1146 (42S02): Table 'tugas.latihan_2' doesn't exist
+MariaDB [tugas]> desc latihan_3;
++-------+------------------+------+-----+------------+----------------+
+| Field | Type             | Null | Key | Default    | Extra          |
++-------+------------------+------+-----+------------+----------------+
+| a     | int(10) unsigned | NO   | PRI | NULL       | auto_increment |
+| b     | date             | YES  |     | 2018-01-01 |                |
+| c     | varchar(10)      | NO   |     | merdeka    |                |
++-------+------------------+------+-----+------------+----------------+
+3 rows in set (0.016 sec)
+
+8. ========================================================================================================================
+
+MariaDB [tugas]> create temporary table if not exists latihan_4
+    -> (a timestamp);
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [tugas]> desc latihan_4;
++-------+-----------+------+-----+---------------------+-------------------------------+
+| Field | Type      | Null | Key | Default             | Extra                         |
++-------+-----------+------+-----+---------------------+-------------------------------+
+| a     | timestamp | NO   |     | current_timestamp() | on update current_timestamp() |
++-------+-----------+------+-----+---------------------+-------------------------------+
+1 row in set (0.015 sec)
+
+9. ========================================================================================================================
+
+MariaDB [tugas]> drop table if exists latihan_1, latihan_3;
+Query OK, 0 rows affected (0.013 sec)
+
+MariaDB [tugas]> drop temporary table if exists latihan_4;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [tugas]> drop table if exists latihan_1, latihan_3;
+Query OK, 0 rows affected, 2 warnings (0.000 sec)
+
+MariaDB [tugas]> show warnings;
++-------+------+---------------------------------+
+| Level | Code | Message                         |
++-------+------+---------------------------------+
+| Note  | 1051 | Unknown table 'tugas.latihan_1' |
+| Note  | 1051 | Unknown table 'tugas.latihan_3' |
++-------+------+---------------------------------+
+2 rows in set (0.000 sec)
+
+MariaDB [tugas]> drop temporary table if exists latihan_4;
+Query OK, 0 rows affected, 1 warning (0.000 sec)
+
+MariaDB [tugas]> show warnings;
++-------+------+---------------------------------+
+| Level | Code | Message                         |
++-------+------+---------------------------------+
+| Note  | 1051 | Unknown table 'tugas.latihan_4' |
++-------+------+---------------------------------+
+1 row in set (0.000 sec)
